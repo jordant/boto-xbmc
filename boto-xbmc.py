@@ -51,9 +51,9 @@ for bucket in buckets:
                                 print "Create folder " + key.name
                                 os.makedirs(kf)
                     dest = bucket_path + '/' + key.name + '.strm'
-                    src_url = key.generate_url(0, query_auth=True, force_http=True)
+                    src_url = key.generate_url(3600, query_auth=True, force_http=True)
                     try:
-                        with open(dest, "a") as df:
+                        with open(dest, "w") as df:
                             df.write(src_url)
                     except S3ResponseError:
                         print 'Failed to write ' + dest
