@@ -1,7 +1,8 @@
 boto-xbmc
 =========
 
-Uses boto to create a directory structure/strm files from S3 buckets and objects , that can be scrapped by XBMC. This allows you to stream your media library directly from any S3 endpoint.
+Uses boto library to create STRM files from object stores such as DreamHost Objects
+(DHO) and Amazon S3.
 
 ## Usage
 ./boto-xbmc.py -a ACCESS_KEY_ID -s SECRET -A -p /home/user/media 

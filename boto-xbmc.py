@@ -22,20 +22,12 @@ if not os.path.exists(d):
    os.makedirs(d)
 
 conn = S3Connection(options.access, options.secret, host=options.host)
-
-buckets = ()
-
-if options.bucket:
-    try:
-        bucket = conn.get_bucket(options.bucket)
-    except:
-        print 'Error: Cannot find bucket ' + options.bucket
-        sys.exit()
-    buckets = bucket
-elif options.allbuckets:
-    buckets = conn.get_all_buckets()
+buckets = conn.get_all_buckets()
 
 for bucket in buckets:
+    if options.bucket:
+        if not bucket.name == options.bucket:
+                continue
     print 'Bucket ' + bucket.name
     bucket_path = options.path + "/" + bucket.name + "/"
     b = os.path.dirname(bucket_path)
@@ -50,8 +42,11 @@ for bucket in buckets:
                         if not os.path.exists(kf):
                                 print "Create folder " + key.name
                                 os.makedirs(kf)
-                    dest = bucket_path + '/' + key.name + '.strm'
+                        continue
+
+                    dest = bucket_path + '/' + os.path.splitext(key.name)[0] + '.strm'
                     src_url = key.generate_url(3600, query_auth=True, force_http=True)
+
                     try:
                         with open(dest, "w") as df:
                             df.write(src_url)
